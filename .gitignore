@@ -6,3 +6,7 @@ dist/
 !.env.example
 __pycache__/
 .venv/
+.build/
+.swiftpm/
+build/
+artifacts/
