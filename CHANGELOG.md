@@ -1,18 +1,20 @@
-# Historial de cambios
+# Changelog
 
-## Sin publicar
+[Español](CHANGELOG.es.md)
 
-Primera versión local de **ActionsWatcher**, con versión de producto `1.0.0` y build `2`.
+## Unreleased
 
-- App nativa de barra de menús para macOS 14 o posterior, implementada con SwiftUI y AppKit.
-- Conexión mediante GitHub CLI o token personal almacenado en Keychain.
-- Selección de hasta 10 repositorios y seguimiento de ejecuciones activas y recientes.
-- Búsqueda, filtros y gráfico interactivo de actividad reciente.
-- Anillo de progreso, mapa de jobs, barras de pasos e inspector del paso actual.
-- Animaciones que respetan **Reducir movimiento** y la visibilidad del panel.
-- Cursor de mano en elementos seleccionables y conservación del cursor de texto en los campos de entrada.
-- Paleta azul marino y crema, con colores semánticos para los resultados.
-- Notificaciones de fallos y éxitos, intervalos configurables e inicio con macOS.
-- Consultas condicionales, paginación, seguimiento de ejecuciones largas y espera ante errores o límites de GitHub.
-- Modo de demostración, scripts de compilación y empaquetado, renders nativos y 24 pruebas del núcleo.
-- Cambio de nombre de Actions Bar a ActionsWatcher, manteniendo los identificadores internos de preferencias y Keychain.
+First local version of **ActionsWatcher**, version `1.0.0` (build `2`).
+
+- Native menu bar app for macOS 14 and later, built with SwiftUI and AppKit.
+- Connect with GitHub CLI or a personal access token stored in Keychain.
+- Monitor active and recent workflow runs across up to 10 selected repositories.
+- Search and filter runs, and open them from an interactive activity chart.
+- Inspect jobs and steps with a progress ring, job map, step bars, and a step inspector.
+- Respect macOS **Reduce Motion** and pause animations when the panel closes.
+- Use a pointing-hand cursor for interactive controls and retain the text cursor in input fields.
+- Navy and cream palette with distinct status colors.
+- Failure and success notifications, configurable polling intervals, and launch at login.
+- Conditional requests, pagination, tracking for long-running workflows, and backoff for errors and GitHub rate limits.
+- Demo mode, build and packaging scripts, native preview rendering, and 24 core tests.
+- Renamed Actions Bar to ActionsWatcher, retaining the existing preferences and Keychain identifiers.

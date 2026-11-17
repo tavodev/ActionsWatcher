@@ -1,88 +1,88 @@
 # ActionsWatcher
 
-Una app nativa de macOS para seguir GitHub Actions desde la barra de menús. SwiftUI + AppKit, sin dependencias externas ni servicios intermediarios.
+[Español](README.es.md)
 
-Consulta las ejecuciones, explora sus jobs y pasos, y recibe avisos al terminar sin mantener abierta la web de GitHub.
+ActionsWatcher is a native macOS menu bar app for monitoring GitHub Actions. It uses SwiftUI and AppKit and connects directly to GitHub without third-party packages or intermediary services.
 
-## Compilar y abrir
+See workflow runs, inspect jobs and steps, and get completion notifications from the menu bar.
 
-La app requiere **macOS 14 o posterior**. Para compilarla, necesitas **Swift 6** y el **SDK de macOS 15 o posterior**, disponibles con Xcode 16 o sus Command Line Tools y en versiones posteriores compatibles con tu Mac. [Requisitos de Xcode](https://developer.apple.com/xcode/system-requirements/)
+## Build and launch
 
-Desde la raíz del repositorio, compila y abre la app con este comando.
+The app runs on **macOS 14 or later**. To build it, you need **Swift 6** and the **macOS 15 SDK or later**, available with Xcode 16, its Command Line Tools, or a newer version compatible with your Mac. [Xcode system requirements](https://developer.apple.com/xcode/system-requirements/)
+
+From the repository root, build and launch the app.
 
 ```sh
 ./scripts/run.sh
 ```
 
-Para explorar datos ficticios sin conectar GitHub, cierra cualquier instancia abierta de ActionsWatcher y ejecuta el modo demo.
+To explore sample data without connecting to GitHub, quit any running instance of ActionsWatcher and launch demo mode.
 
 ```sh
 ./scripts/run.sh --demo
 ```
 
-El script deja la app en `build/ActionsWatcher.app` para que puedas volver a abrirla con un doble clic. Aparece en la barra de menús. El binario se compila para la arquitectura del Mac actual y se firma ad hoc para uso local.
+The script creates `build/ActionsWatcher.app`, which you can reopen by double-clicking it. The app appears in the menu bar. The script builds for your Mac's architecture and signs the bundle ad hoc for local use.
 
-## Conectar GitHub
+## Connect to GitHub
 
-Puedes usar una sesión existente de GitHub CLI con el botón **Usar mi sesión de GitHub CLI**. La app busca `gh` en las rutas habituales de Homebrew y mantiene su token en memoria durante la sesión. Puedes iniciar sesión con `gh auth login --hostname github.com` o usar un token personal.
+The app interface is in Spanish. This guide uses the labels shown in the app so you can find each control.
 
-Para conectar con un token personal de acceso granular, sigue estos pasos.
+Click **Usar mi sesión de GitHub CLI** to use an existing GitHub CLI session. ActionsWatcher looks for `gh` in standard Homebrew locations and keeps the token in memory during the session. To sign in to GitHub CLI, run `gh auth login --hostname github.com`. You can also connect with a personal access token.
 
-1. Abre **Conectar con un token personal → Crear token**.
-2. Selecciona un propietario de recursos y los repositorios que quieres monitorear.
-3. Asigna acceso de lectura a **Actions**. GitHub incluye acceso de lectura a **Metadata** en estos tokens.
-4. Pega el token en la app, pulsa **Conectar** y elige los repositorios que quieras seguir.
+1. Click **Conectar con un token personal**, then **Crear token** to create a fine-grained personal access token.
+2. Select a resource owner and the repositories you want to monitor.
+3. Set **Actions** to **Read-only**. GitHub already includes read access to **Metadata**.
+4. Paste the token into the app, click **Conectar**, and select the repositories to monitor.
 
-Cada token granular se limita a un propietario de recursos. Para repositorios privados de una organización, GitHub puede solicitar autenticación SSO al crear el token y la organización puede exigir su aprobación. La app se conecta a `github.com`. [Tokens personales de GitHub](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) · [Autorización SSO](https://docs.github.com/en/enterprise-cloud@latest/authentication/authenticating-with-single-sign-on/authorizing-a-personal-access-token-for-use-with-single-sign-on)
+A fine-grained token has one resource owner. For private organization repositories, GitHub may require SSO during token creation and the organization may require approval. ActionsWatcher connects to `github.com`. [GitHub personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) · [SSO authorization](https://docs.github.com/en/enterprise-cloud@latest/authentication/authenticating-with-single-sign-on/authorizing-a-personal-access-token-for-use-with-single-sign-on)
 
-## Uso diario
+## Monitor workflow runs
 
-1. Selecciona hasta 10 repositorios desde **Repositorios**, en el pie del panel. Puedes buscarlos o añadirlos como `propietario/repositorio` o mediante una URL de GitHub.
-2. Consulta las ejecuciones activas y recientes. Usa los filtros o la búsqueda; las celdas del gráfico de actividad también abren su ejecución.
-3. Abre una ejecución para ver el anillo de progreso y el mapa de jobs. Las tarjetas muestran su estado y sus pasos terminados; **Ver los N jobs** despliega los restantes.
-4. Selecciona una tarjeta para ir al inspector del job. Pulsa un nodo de la línea de pasos para explorar ese paso, o **Seguir actual** para volver al seguimiento del paso actual. **Ver los N pasos** muestra el detalle completo.
-5. Ajusta el intervalo, las notificaciones y el inicio con macOS desde **Preferencias**. Usa el botón de actualización del encabezado para solicitar una consulta, respetando la espera vigente si GitHub ha limitado las solicitudes.
+1. Click **Repositorios** (Repositories) at the bottom of the panel and select up to 10 repositories. You can search the list or add a repository by its `owner/repo` name or GitHub URL.
+2. Browse active and recent runs using the filters, search field, or activity chart. Clicking a cell in the chart opens its run.
+3. Open a run to see its progress ring and job map. Each card shows the job status and completed step count. Click **Ver los N jobs** to show the remaining jobs.
+4. Select a job card and click a point on the timeline to inspect a step. **Seguir actual** resumes following the current step. **Ver los N pasos** expands the full step list.
+5. Open **Preferencias** (Settings) to change the polling interval, notifications, or launch at login. The refresh button in the header requests a refresh when GitHub's retry window allows it.
 
-El anillo representa jobs terminados sobre jobs publicados por GitHub, incluidos los fallidos, cancelados y omitidos. Las barras representan pasos de cada job. Estos gráficos no estiman el tiempo restante ni representan dependencias entre jobs.
+The ring shows completed jobs out of the jobs GitHub has reported, including failed, canceled, and skipped jobs. The bars show step progress within each job. Use GitHub for the full logs and job dependencies.
 
-## Qué incluye
+## Features
 
-- Icono de estado y número de ejecuciones activas en la barra de menús. Clic derecho para abrir o salir.
-- Hasta 10 repositorios seleccionados, con búsqueda y adición por nombre o URL. La lista de repositorios tiene paginación.
-- Ejecuciones recientes y activas, con workflow, rama, commit, duración e intento. Las ejecuciones activas se consultan también por separado para encontrar builds antiguos que siguen corriendo.
-- Filtros de todas, activas y fallidas; búsqueda por repositorio, rama, workflow o título.
-- Detalle de la ejecución con un anillo de jobs terminados, un mapa de tarjetas seleccionables y un inspector de pasos. Los jobs fallidos aparecen primero y puedes volver al mapa desde cualquier job.
-- Línea interactiva de pasos, con nombres completos disponibles al pasar el cursor y detalle desplegable. Los hashes de acciones se abrevian en pantalla.
-- Indicadores animados de actividad, transiciones de progreso y un gráfico de las ejecuciones recientes. Las animaciones respetan **Reducir movimiento** y se pausan al cerrar el panel.
-- Cursor de mano sobre tarjetas, filtros, pasos y controles seleccionables. Los campos de entrada mantienen el cursor de texto y los controles deshabilitados no muestran la mano.
-- Actualización de los jobs mientras su ejecución está abierta y paginación para matrices grandes.
-- Notificaciones de fallos y, opcionalmente, éxitos. Actívalas en **Preferencias → Activar notificaciones en macOS**. Solo se notifican transiciones de activo a terminado observadas durante esta sesión; no se notifican ejecuciones históricas al arrancar. Pulsa una notificación para abrir la ejecución en GitHub.
-- Actualización cada 15, 30, 60 o 120 segundos, consultas condicionales con ETag y concurrencia limitada. La app respeta la espera indicada por GitHub, aumenta el intervalo si fallan todos los repositorios y marca como desactualizados los datos afectados.
-- Inicio con macOS, configurable desde Preferencias. Para uso permanente mueve la app a Aplicaciones antes de activar esta opción; macOS puede pedir autorizarla en Ítems de inicio.
-- Modo de demostración explícitamente identificado, sin acceder a GitHub.
+- Menu bar status icon with an active run count. Right-click it to open the panel or quit.
+- Searchable, paginated repository list with support for up to 10 selected repositories.
+- Active and recent runs with workflow, branch, commit, duration, and attempt. The app also queries active runs separately to keep tracking older runs that are still in progress.
+- All, active, and failed run filters. Search by repository, branch, workflow, or title.
+- Job and step inspection for the displayed attempt, with failed jobs listed first and abbreviated action commit hashes. Hover over a truncated label to see the full name.
+- Live job updates while viewing a run and pagination for large job matrices.
+- Activity animations that respect macOS **Reduce Motion** and pause when the panel closes.
+- Failure notifications and optional success notifications. In **Preferencias**, click **Activar notificaciones en macOS** and grant permission. Notifications cover runs the app observed in progress during the current session. Click a notification to open the run in GitHub.
+- Polling every 15, 30, 60, or 120 seconds, with conditional ETag requests and limited concurrency. The app respects GitHub's retry window, backs off when all repository requests fail, and marks affected data as stale.
+- Optional launch at login. Move the app to Applications before enabling this setting. macOS may prompt you to approve the login item.
+- Demo mode with labeled sample data and offline browsing.
 
-El indicador prioriza ejecuciones activas. Cuando terminan, resume el último resultado conocido de cada combinación de repositorio, workflow y rama en las ejecuciones consultadas; un fallo antiguo de la misma combinación deja de dominar cuando hay una ejecución nueva satisfactoria.
+The menu bar indicator prioritizes active runs. When they finish, it summarizes the latest known result per repository, workflow, and branch. A new successful run clears an earlier failure from that combination's summary.
 
-La app sigue los workflows de Actions. Si tu workflow termina antes que un despliegue en otro proveedor, el estado del despliegue externo no está incluido. El detalle muestra jobs y pasos; los logs completos se abren en GitHub.
+ActionsWatcher monitors GitHub Actions runs. For a deployment that continues after its workflow finishes, check the deployment provider for its status.
 
-## Datos y credenciales
+## Data and credentials
 
-ActionsWatcher consulta directamente la API de GitHub mediante solicitudes de lectura y funciona sin analítica. Guarda los tokens ingresados manualmente en Keychain y los tokens obtenidos de GitHub CLI solo en memoria. Las preferencias locales incluyen los repositorios seleccionados, el modo de conexión, el intervalo y las opciones de notificación.
+ActionsWatcher makes read-only requests directly to the GitHub API and has no analytics. It saves manually entered tokens in macOS Keychain and keeps tokens obtained from GitHub CLI in memory. Local preferences store the selected repositories, connection mode, polling interval, and notification options.
 
-**Desconectar** elimina el token que guarda la app y la selección de repositorios. Tu sesión de GitHub CLI sigue disponible.
+Click **Desconectar** (Disconnect) to remove the token stored by ActionsWatcher and clear the repository selection. You can continue using your GitHub CLI session.
 
-## Apariencia
+## Appearance
 
-| Uso | Color |
+| Use | Color |
 | --- | --- |
-| Fondo | `#010736` |
-| Tarjetas | `#0D1C42` |
-| Superficies elevadas y selección | `#22396F` |
-| Texto principal y acentos | `#FCF1D0` |
+| Background | `#010736` |
+| Cards | `#0D1C42` |
+| Raised surfaces and selection | `#22396F` |
+| Primary text and accents | `#FCF1D0` |
 
-Los resultados conservan colores semánticos de éxito, espera y fallo, acompañados por iconos y etiquetas. Los controles incluyen nombres de accesibilidad y los textos abreviados ofrecen el nombre completo al pasar el cursor.
+Status icons and labels accompany the colors for success, waiting, and failure. Controls have accessibility labels. Interactive controls use a pointing-hand cursor, and text fields retain the text cursor.
 
-## Desarrollo y validación
+## Development and validation
 
 ```sh
 ./scripts/swift-local.sh test
@@ -90,17 +90,19 @@ Los resultados conservan colores semánticos de éxito, espera y fallo, acompañ
 codesign --verify --strict 'build/ActionsWatcher.app'
 ```
 
-Las pruebas del núcleo usan respuestas HTTP simuladas. Consulta la guía para conocer la arquitectura, generar capturas PNG de la demo y verificar la app localmente. [Guía de desarrollo](docs/DEVELOPMENT.md) · [Historial de cambios](CHANGELOG.md)
+The core tests use mocked HTTP responses. See the development guide for the architecture, demo screenshots, and local validation steps. [Development guide](docs/DEVELOPMENT.md) · [Changelog](CHANGELOG.md)
 
-## Estructura
+## Repository layout
 
-- `Sources/ActionsWatcherCore`: modelos, cliente HTTP y reglas de seguimiento.
-- `Sources/ActionsWatcher`: interfaz, barra de menús, preferencias, Keychain y notificaciones.
-- `Tests/ActionsWatcherCoreTests`: pruebas del cliente y comportamiento de monitoreo.
-- `scripts`: compilación, empaquetado y generación del icono en código.
-- `Resources`: metadatos del bundle de macOS.
-- `docs`: notas de desarrollo y validación.
+| Path | Contents |
+| --- | --- |
+| `Sources/ActionsWatcherCore` | Models, HTTP client, and monitoring rules |
+| `Sources/ActionsWatcher` | Interface, menu bar, preferences, Keychain, and notifications |
+| `Tests/ActionsWatcherCoreTests` | HTTP client and monitoring tests |
+| `scripts` | Build and packaging scripts and icon generation |
+| `Resources` | macOS bundle metadata |
+| `docs` | Development and validation notes |
 
-## Licencia
+## License
 
-ActionsWatcher se distribuye bajo la licencia MIT. [Texto de la licencia](LICENSE)
+ActionsWatcher is available under the MIT License. [License text](LICENSE)
